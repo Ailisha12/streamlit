@@ -15,15 +15,12 @@ data['year'] = data['month'].dt.year
 grouped_data = data.groupby(['year', 'state'])['totals'].sum().reset_index()
 max_year = grouped_data['year'].max()
 filtered_data = grouped_data[grouped_data['year'] == max_year]
-char = alt.Chart(filtered_data).mark_line().encode(
-    x='year:O',
-    y='totals',
-    color='state'
-).properties(
-    width=600,
-    height=400
-)
-st.write(char)
+filtered_data = filtered_data[filtered_data['totals'] >  100000]
+
+fig = px.bar(filtered_data, x='state', y='totals', color='state')
+fig.update_layout(width=600, height=400)
+st.write(fig)
+
 
 
 st.title('Второй график')
